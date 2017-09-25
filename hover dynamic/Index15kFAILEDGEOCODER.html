@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polygon</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+
+      let provinceName;
+      let proLat, proLong;
+      let final1;
+      let geocoder = new google.maps.Geocoder();
+
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: {lat: 12.8797, lng: 121.7740}, 
+          mapTypeId: 'roadmap'
+        });
+
+
+        // fetch('https://raw.githubusercontent.com/khellytaguinod/googleMapProject/master/provinces.json')
+           fetch('https://raw.githubusercontent.com/khellytaguinod/googleMapsUpdated/master/provincesList.json')
+          .then(response => response.json())
+          .then(provinces => {
+            console.log(provinces)
+
+            let provincesPH = provinces.map(function(x){
+              return `${x} PH`;
+            })
+
+            provinceName = provincesPH.toString();
+
+            // provinceName = `${provinces} PH`;
+
+             // console.log(provinceName)
+            
+            provinces.forEach(fetchProvinceData)
+          });
+
+          // console.log(provinceName)
+
+         var contentString = '<div id="content">'+
+            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+            '</div>';
+
+         var infowindow = new google.maps.InfoWindow({
+          content: contentString
+          });
+
+          let fetchProvinceData = function(provinces) {
+
+          fetch(`https://raw.githubusercontent.com/khellytaguinod/googleMapsUpdated/master/provincesSimplified/output/15k/${provinces}.json`)
+
+          .then(response => response.json())
+          .then(shapes => {
+
+
+             shapes.forEach( element => {
+
+              // let randomColor = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+
+              geocoder.geocode( { 'address': provinceName }, function(results, status) {
+
+                  if (status == google.maps.GeocoderStatus.OK) {
+                    let latitude = results[0].geometry.location.lat();
+                    let longitude = results[0].geometry.location.lng();
+
+                    // let final = `${latitude} ${longitude}`
+
+                    // final1 = final
+
+                    proLat = latitude
+
+                    // let proLat = latitude;
+                    // let proLong = longitude;
+
+
+                    // alert(latitude);
+                    // alert(longitude);
+
+                     // console.log(final)
+
+                  } 
+                }); 
+
+                     console.log(proLat)
+
+              // console.log(provinceName)
+
+
+
+              let shape = new google.maps.Polygon({
+              paths: shapes,
+              strokeColor: `#FF9400`,
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              // fillColor: `#FF9400`,
+              fillOpacity: 0.35
+              // position: {"lat":17.5951,"lng":120.7983},
+
+     
+
+              // position: {"lat":proLat, "lng": proLong}
+
+              });
+
+              // console.log(proLat)
+              // console.log(proLong)
+              
+              shape.setMap(map); 
+
+              /// even listener
+              shape.addListener('mouseover', function() {
+                   infowindow.open(map,shape);
+                });
+
+              shape.addListener('mouseout', function () {
+                infowindow.close(map,shape);
+                    });
+                })
+
+
+          });
+        }
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDl32dSXGt7MYeJnkofk4mARVT4VUF5Poo&callback=initMap">
+    </script>
+  </body>
+</html>

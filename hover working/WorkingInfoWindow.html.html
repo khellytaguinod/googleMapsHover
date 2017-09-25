@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polygon</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+
+      // This example creates a simple polygon representing the Bermuda Triangle.
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 7,
+          center: {lat: 17.5667714, lng: 120.5138074}, 
+          mapTypeId: 'roadmap'
+        });
+
+      
+
+        var abraCoords = [{"lat":17.95706,"lng":120.967949},{"lat":17.92584,"lng":120.994209},{"lat":17.848749,"lng":121.005157},{"lat":17.846359,"lng":121.072777},{"lat":17.824209,"lng":121.099792},{"lat":17.68395,"lng":121.122704},{"lat":17.66675,"lng":121.091507},{"lat":17.58935,"lng":121.11972},{"lat":17.560869,"lng":121.110191},{"lat":17.49139,"lng":120.998009},{"lat":17.408739,"lng":120.994423},{"lat":17.1908,"lng":120.897667},{"lat":17.18788,"lng":120.798912},{"lat":17.159519,"lng":120.766373},{"lat":17.15873,"lng":120.702171},{"lat":17.190359,"lng":120.675423},{"lat":17.25325,"lng":120.681953},{"lat":17.307329,"lng":120.618156},{"lat":17.30843,"lng":120.559357},{"lat":17.34898,"lng":120.539948},{"lat":17.43399,"lng":120.579201},{"lat":17.480709,"lng":120.578423},{"lat":17.49984,"lng":120.520363},{"lat":17.48238,"lng":120.489548},{"lat":17.48876,"lng":120.470161},{"lat":17.635031,"lng":120.501083},{"lat":17.801861,"lng":120.586838},{"lat":17.837,"lng":120.692482},{"lat":17.892891,"lng":120.727547},{"lat":17.914289,"lng":120.786636},{"lat":17.962009,"lng":120.840569},{"lat":17.950581,"lng":120.909737},{"lat":17.971359,"lng":120.926598},{"lat":17.95706,"lng":120.967949}];
+        
+        // Construct the polygon.
+        var abra = new google.maps.Polygon({
+          paths: abraCoords,
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35,
+          position: {"lat":17.5951,"lng":120.7983}
+        });
+
+        abra.setMap(map);
+
+          var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+            'sandstone rock formation in the southern part of the '+
+            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+            'south west of the nearest large town, Alice Springs; 450&#160;km '+
+            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+            'Aboriginal people of the area. It has many springs, waterholes, '+
+            'rock caves and ancient paintings. Uluru is listed as a World '+
+            'Heritage Site.</p>'+
+            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+            '(last visited June 22, 2009).</p>'+
+            '</div>'+
+            '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+
+        abra.addListener('mouseover', function() {
+            // marker.setIcon(icon2);
+            // alert("hover testing working by khelly");
+            // $('#marker-tooltip').show();
+            // infowindow.open(map, abra);
+            infowindow.open(map,abra);
+
+        });
+
+          abra.addListener('mouseout', function () {
+            // $('#marker-tooltip').hide();
+
+            // infowindow.close(map, abra);
+            infowindow.close(map,abra);
+        });
+          
+
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDl32dSXGt7MYeJnkofk4mARVT4VUF5Poo&callback=initMap">
+    </script>
+  </body>
+</html>
